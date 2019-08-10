@@ -8,15 +8,21 @@ public class MovieGame {
         movie.readMoviesFromFile("movies.txt");
         movie.pickMovieFromList();
 
-
-
+        System.out.println();
         System.out.println("\nStart guessing letters!");
         System.out.println();
 
-        for (int i = 0; i < 10; i++) {
+        while (Movie.getNumberOfGuessesLeft() > 0){
             guess.guess();
-            System.out.println("Test guessletter "+guess.guessedLetter);
             movie.replaceUnderscores(guess.guessedLetter);
+            System.out.println("You have "+ Movie.getNumberOfGuessesLeft()+" tries left");
+            System.out.println("CountUnderscores: "+ Movie.countUnderscores +". CountGoodGuesse: "+ Movie.countGoodGuesses +".");
+            System.out.println();
+
+            if (Movie.countUnderscores == Movie.countGoodGuesses) {
+                System.out.println("YOU WON!");
+                break;
+            }
         }
 
     }

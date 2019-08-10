@@ -6,14 +6,25 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Movie {
+class Movie {
 
     static private String pickedTitle;
     static private String[] pickedTitleUnderscored = new String[100];
     static ArrayList<String> movieList = new ArrayList<String>();
+    static int countUnderscores = 0; //count underscores excluding spaces
+    static int countGoodGuesses = 0; //count underscores excluding spaces
 
+    static private int numberOfGuessesLeft = 10;
 
-    public void readMoviesFromFile(String filename) { //read all the movie titles from text file
+    static int getNumberOfGuessesLeft() {
+        return numberOfGuessesLeft;
+    }
+
+    public static void setNumberOfGuessesLeft(int numberOfGuessesLeft) {
+        Movie.numberOfGuessesLeft = numberOfGuessesLeft;
+    }
+
+    void readMoviesFromFile(String filename) { //read all the movie titles from text file
 
         try {
             File file = new File(filename); //read external file
@@ -27,57 +38,52 @@ public class Movie {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Exception: " + e);
         }
-/*
-       for (String s : movieList) { //print out all movies
-            System.out.println(s);
-       }
-        System.out.println();
-        System.out.println("Total movies: "+movieList.size());
-
-*/
     }
 
-    public String pickMovieFromList(){  // random pick movie title from input list
+    void pickMovieFromList(){  // random pick movie title from input list
         Random random = new Random();
         int randomInt = random.nextInt(movieList.size()); //pick random title from movie list
-//            System.out.println("Random int: "+randomInt);
         pickedTitle = movieList.get(randomInt);
         System.out.println("Picked movie: "+pickedTitle);
-        System.out.println("Movie title to guess: ");
+        System.out.println("You need to guess the movie title: ");
         char x = ' ';
         for (int i = 0; i < pickedTitle.length(); i++){ // fill temp array with underscores
             if (pickedTitle.charAt(i) == ' '){
                 x = ' ';
-            } else x = '_';
+            } else {
+                x = '_';
+                countUnderscores++;
+            }
             pickedTitleUnderscored[i] = String.valueOf(x);
             System.out.print(pickedTitleUnderscored[i]); // print underscores
         }
-        return pickedTitle;
-
-
     }
 
-    public String replaceUnderscores(String guessedLetter){ //replace underscore with letter after guessing one
-
+    void replaceUnderscores(String guessedLetter){ //replace underscore with letter after guessing one
+        boolean guessCheck = false; // if there is more than one guessed letter in title print letter just once
         for (int i = 0; i < pickedTitle.length(); i++){ //
             String tempTitleLetter = String.valueOf(pickedTitle.charAt(i));
             if (tempTitleLetter.equals(guessedLetter)){
-                System.out.println("You guessed right! Letter: "+guessedLetter);
+                guessCheck = true;// if there is more than one guessed letter in title print letter just once
                 pickedTitleUnderscored[i] = guessedLetter;
-            }
 
+            }
         }
+        if(guessCheck) {// if there is more than one guessed letter in title print letter just once
+            System.out.println("You guessed right! Letter: "+guessedLetter);
+            countGoodGuesses++; //????????????????????? TODO jak sprawdzić gdy się odgadło ale ta litera już była?
+        } else {
+            System.out.println("Wrong! (movie class)");
+            setNumberOfGuessesLeft(numberOfGuessesLeft-1);
+        }
+
         for (int i = 0; i < pickedTitle.length(); i++){ // fill temp array with underscores
             if (pickedTitle.charAt(i) != ' '){
                 System.out.print(pickedTitleUnderscored[i]);
 
             } else System.out.print(' ');
-
         }
         System.out.println();
-        return pickedTitle;
-
-
     }
 
 

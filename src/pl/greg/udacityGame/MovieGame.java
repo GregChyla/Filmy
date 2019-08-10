@@ -8,14 +8,16 @@ public class MovieGame {
         movie.readMoviesFromFile("movies.txt");
         movie.pickMovieFromList();
 
+
+
         System.out.println("\nStart guessing letters!");
-        guess.guess();
-        guess.guess();
-//        guess.guess();
-//        guess.guess();
+        System.out.println();
 
-
-
+        for (int i = 0; i < 10; i++) {
+            guess.guess();
+            System.out.println("Test guessletter "+guess.guessedLetter);
+            movie.replaceUnderscores(guess.guessedLetter);
+        }
 
     }
 }

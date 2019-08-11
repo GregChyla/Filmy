@@ -15,9 +15,14 @@ public class MovieGame {
         while (Movie.getNumberOfGuessesLeft() > 0){
             guess.guess();
             movie.replaceUnderscores(guess.guessedLetter);
-            System.out.println("You have "+ Movie.getNumberOfGuessesLeft()+" tries left");
-            System.out.println("CountUnderscores: "+ Movie.countUnderscores +". CountGoodGuesse: "+ Movie.countGoodGuesses +".");
             System.out.println();
+            System.out.println("Tries left: "+ Movie.getNumberOfGuessesLeft());
+            System.out.println();
+
+            if (Movie.getNumberOfGuessesLeft() == 0){
+                System.out.println("I'm sorry, you LOST!");
+                break;
+            }
 
             if (Movie.countUnderscores == Movie.countGoodGuesses) {
                 System.out.println("YOU WON!");
